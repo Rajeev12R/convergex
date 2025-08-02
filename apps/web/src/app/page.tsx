@@ -15,7 +15,6 @@ import NetworkStatus from "@/components/homepage/NetworkStatus"
 import HiddenPatterns from "@/components/homepage/HiddenPatterns"
 import BouncyCursor from "@/components/homepage/BouncyCursor"
 import Loader from "@/components/homepage/Loader"
-import prisma  from "@repo/db/client"
 
 const Page = () => {
   const { user, isSignedIn, isLoaded } = useUser()
@@ -26,18 +25,29 @@ const Page = () => {
   const [currentTime, setCurrentTime] = useState<string>("")
   const [isNavigating, setIsNavigating] = useState(false)
 
-  useEffect(()=> {
-    const initializePrisma = async () => {
-      await prisma.user.create({
-        data: {
-          name: "Rajeev",
-          email: "rajeev@gmail.com"
+useEffect(() => {
+    const createUser = async () => {
+      try {
+        const res = await fetch("/api/db-check", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+
+        const data = await res.json()
+
+        if (!res.ok) {
+          console.error("Error from server:", data)
+        } else {
+          console.log("User created:", data)
         }
-      })
+      } catch (err) {
+        console.error("Client-side error:", err)
+      }
     }
 
-    initializePrisma()
-
+    createUser()
   }, [])
 
   // Handle Launch Meeting button click
