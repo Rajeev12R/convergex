@@ -10,6 +10,7 @@ export async function POST() {
       },
     })
 
+    
     return NextResponse.json(result)
   } catch (error) {
     console.error("Prisma error:", error)
