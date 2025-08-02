@@ -9,7 +9,6 @@ export async function POST() {
         email: "sai@gmail.com",
       },
     })
-
     
     return NextResponse.json(result)
   } catch (error) {
